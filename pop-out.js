@@ -1,3 +1,7 @@
+/* Published under The MIT License     *
+ * Copyright (c) 2022 Russell Beswick  *
+ * https://github.com/besworks/pop-out */
+
 class PopOutElement extends HTMLElement {
   constructor() {
     super();
