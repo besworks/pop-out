@@ -6,11 +6,12 @@ class PopOutElement extends HTMLElement {
     this.shadowRoot.innerHTML = this.template;
     this.wrapper = this.shadowRoot.querySelector('#wrapper');
     this.pstamp = this.shadowRoot.querySelector('template').content;
+    this.addEventListener('pointerdown', event => this.toggle());
     this.addEventListener('mousemove', event => this.expand());
     this.addEventListener('mouseenter', event => this.expand());
     this.addEventListener('mouseleave', event => this.retract());
   }
-  
+
   get template() {
     return `
       <style>
@@ -120,6 +121,11 @@ class PopOutElement extends HTMLElement {
     if (now) { after(); }
     else { setTimeout(after, this.delay); }
   }
+
+  toggle() {
+    if (this.out) { this.retract(); }
+    else { this.expand(); }
+  }
 }
 
 class OverScrollElement extends HTMLElement {
@@ -128,12 +134,39 @@ class OverScrollElement extends HTMLElement {
     
     this.attachShadow({ mode : 'open' });
     this.shadowRoot.innerHTML = this.template;
-    this.addEventListener('wheel', event => {
-      this.querySelector('pop-out[active]')?.retract(true);
-      requestAnimationFrame(ts => {
-        this.scrollBy({ left: event.deltaX / 2 });
-      });
-    }, true);
+    this.addEventListener('wheel', event => this.#handleScroll(event), true);  
+    this.addEventListener('touchmove', event => this.#handleTouch(event), true);
+    this.addEventListener('touchstart', event => this.#setPosition(event), true);
+    this.addEventListener('touchend', event => this.#setPosition(), true);
+  }
+
+  #start = null;
+
+  #setPosition(event) {
+    if (event?.touches?.length) {
+      this.#start = event.touches[0].clientX;
+    } else { this.#start = null; }
+  }
+
+  #handleTouch(event) {
+    if (this.#start != null && event?.touches?.length) {
+      let x = event.touches[0]?.clientX;
+      event.deltaX = this.#start - x;
+      this.#start = x;
+      this.#handleScroll(event);
+    } else {
+      this.#setPosition();
+    }
+  }
+
+  get active() {
+    return this.querySelector('pop-out[active]');
+  }
+
+  #handleScroll(event) {
+    requestAnimationFrame(ts => {
+      this.scrollBy({ left: event.deltaX });
+    }); this.active?.retract(true);
   }
   
   get template() {
