@@ -8,10 +8,14 @@ body {
   overflow: visible;
   display: grid;
   align-items: center;
-  justify-content: center;
+  justify-content:center;
+  font-family: sans-serif;
 }
 
-p.long { height: 80vh; }
+h1 {
+  color: white;
+  text-shadpw: 0.2rem 0.2rem black;
+}
 
 over-scroll { width: 50vw; }
 over-scroll > * { margin-bottom: 1rem; }
@@ -34,4 +38,9 @@ pop-out ul { padding: 0.75rem; }
 .test-b {
   padding: 1rem;
   background: yellowgreen;
+}
+
+p.info {
+  width: 200px; margin:0; padding: 1rem; border: 0; border-radius: 0.5rem;
+  background: linear-gradient(45deg, dodgerblue, skyblue, transparent);
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
+  <style> .silver { fill: url(#metallic); stroke: url(#metallic); } .white { fill: url(#white); stroke: url(#white); } .blue { fill: url(#blue); stroke: url(#blue); } .dashed { fill: transparent; stroke: #fff; } .dashed-shadow { fill: transparent; stroke: #000; } .shadow { fill: #000; stroke: #000; } </style>
+  <defs>
+    <rect id="big" width="480" height="480" rx="24" ry="24" x="0" y="0" stroke-width="4" filter="url(#shadow)" />
+    <rect id="small" width="224" height="224" rx="24" ry="24" stroke-width="4" filter="url(#shadow)" />
+    <rect id="dash" width="216" height="216" rx="12" ry="12" stroke-width="12" filter="url(#shadow)" />
+    <filter id="shadow" width="150%" height="150%"><feDropShadow stdDeviation="0,0" dx="8" dy="8" flood-color="#000" flood-opacity="1" /></filter>          
+    <linearGradient id="metallic" x1="0%" x2="0%" y1="0%" y2="100%"><stop stop-color="#aaa" offset="0%" /><stop stop-color="#fff" offset="5%" /><stop stop-color="#fff" offset="20%" /><stop stop-color="#aaa" offset="80%" /><stop stop-color="#777" offset="95%" /><stop stop-color="#555" offset="100%" /></linearGradient>
+    <linearGradient id="white" x1="0%" x2="0%" y1="0%" y2="100%"><stop stop-color="#eee" offset="0%" /><stop stop-color="#fff" offset="20%" /><stop stop-color="#fff" offset="80%" /><stop stop-color="#ddd" offset="100%" /></linearGradient>
+    <linearGradient id="blue" x1="0%" x2="0%" y1="0%" y2="100%"><stop stop-color="#0df" offset="0%" /><stop stop-color="#08f" offset="20%" /><stop stop-color="#08f" offset="80%" /><stop stop-color="#05f" offset="100%" /></linearGradient>    
+  </defs>
+  <g><use href="#big" class="silver" x="2" y="2" /></g>
+  <g transform="translate(512, 0)"><use href="#big" class="white" /></g>
+  <g transform="translate(512, 512)"><use href="#big" class="blue" x="2" y="2" /></g>
+  <g transform="translate(0, 512)"><use href="#small" class="silver" x="2"   y="2" /><use href="#small" class="white"  x="258" y="2" /><use href="#small" class="blue"   x="258" y="258" /><use href="#dash"  class="dashed" x="6"   y="262" stroke-dasharray="14,15,60,15,60,15,46, 15,60,15,60,15,46, 15,60,15,60,15,46, 15,60,15,60,15,32" /></g>
+</svg>
