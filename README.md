@@ -1,14 +1,10 @@
 # Pop Out!
 
-This custom element combo provides a horizontally scrolling element with child elements that expand when hovered.
+This custom element combo provides a scrollable element with child elements that expand out of the overflow area when hovered. It was created in response to a [long-standing issue](https://github.com/w3c/csswg-drafts/issues/4092) with the CSS spec and [this question](https://stackoverflow.com/questions/71809003/overflow-x-scroll-and-overflow-y-visible-alternative/) on Stack Overflow.
 
-### Background
+### How it Works
 
-This project was created in response to a [long-standing issue](https://github.com/w3c/csswg-drafts/issues/4092) with the CSS spec. Long story short, if an overflow parent node has a child that expands due to a CSS scale transform, the child element cannot break free of the overflow and will be cut off.
-
-### Solution
-
-Break the child element out of it's static context and position it fixed to the viewport while simultaneously inserting a placeholder of the same dimensions into the static context to prevent the layout from collapsing.
+The child elements are plucked out from the static context and positioned fixed to the viewport while simultaneously inserting a placeholder of the same dimensions into the static context to prevent the layout from collapsing.
 
 ### Usage
 
@@ -21,6 +17,23 @@ Break the child element out of it's static context and position it fixed to the 
 </over-scroll>
 ```
 
-Both element definitions are imported by the single script tag. The outer, `over-scroll` element is necessary to enable scroll events to pass through the nested elements and gracefully de-zoom the active element.
+Both element definitions are imported by the single script tag. The outer, `over-scroll` element is necessary to enable scroll events to pass through the nested elements and gracefully de-zoom the active element. The default mode is to scroll horizontally. Adding a `vertical` attribute modifies the scroll direction.
 
-You can pass any nested markup you want into `pop-out` though images and center justified content tend to work best. A full test page is included with examples.
+````
+<over-scroll vertical>
+   ...
+</over-scroll>
+````
+
+You can pass any markup/elements you want into `pop-out` though images and center justified content tend to work best. You have full control over the styling of your content. A few default rules are applied to `pop-out` elements that can be overriden:
+
+```
+pop-out {
+  cursor: zoom-in;
+  --scale-amount: 1.5;
+  --scale-speed: 0.2s;
+  --scale-timing: ease;
+  --shadow-in: drop-shadow(0 0 0.2rem #00000033);
+  --shadow-out: drop-shadow(0 0 1rem #00000088);
+}
+```

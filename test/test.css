@@ -17,15 +17,18 @@ h1 {
   text-shadpw: 0.2rem 0.2rem black;
 }
 
-over-scroll { width: 50vw; }
-over-scroll > * { margin-bottom: 1rem; }
-
-@media screen and (orientation:portrait) {
-  over-scroll { width:calc(100vw - 2rem); }
-}
-
+over-scroll { width: 50vw; margin: 1rem; }
+pop-out { margin-bottom: 1rem; }
 pop-out img { height: 200px; width: auto; }
 pop-out ul { padding: 0.75rem; }
+
+@media screen and (orientation:portrait) {
+  over-scroll { width: calc(100vw - 2rem); }
+}
+
+over-scroll[vertical] { width: auto; height: 80vh; }
+over-scroll[vertical] pop-out { margin-bottom: 0; margin-right: 1rem; }
+over-scroll[vertical] pop-out img { height: auto; width: 200px; }
 
 .test-a {
   width: 200px;
@@ -38,6 +41,11 @@ pop-out ul { padding: 0.75rem; }
 .test-b {
   padding: 1rem;
   background: yellowgreen;
+}
+
+.test-d {
+  text-align: center;
+  font-weight: bold;
 }
 
 p.info {

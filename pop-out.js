@@ -22,6 +22,11 @@ class PopOutElement extends HTMLElement {
         :host {
           display: block;
           cursor: zoom-in;
+          --scale-amount: 1.5;
+          --scale-speed: 0.2s;
+          --scale-timing: ease;
+          --shadow-in: drop-shadow(0 0 0.2rem #00000033);
+          --shadow-out: drop-shadow(0 0 1rem #00000088);
         }
         
         :host([active]) {
@@ -36,20 +41,16 @@ class PopOutElement extends HTMLElement {
           display: inline-block;
         }
         
-        ::slotted(:not(:first-child)) {
-          display: none;
-        }
-        
-        ::slotted(*) {
+        #wrapper {
           transition-property: transform, filter;
-          transition-timing-function: ease;
-          transition-duration: 0.2s;
-          filter: drop-shadow(0 0 0.2rem #00000033);
+          transition-timing-function: var(--scale-timing);
+          transition-duration: var(--scale-speed);
+          filter: var(--shadow-in);
         }
         
-        :host([active]) ::slotted(:hover) {
-          transform: scale(1.5);
-          filter: drop-shadow(0 0 1rem #00000088);
+        :host([active]) #wrapper:hover {
+          transform: scale(var(--scale-amount));
+          filter: var(--shadow-out)
         }
         
         .fixed { position: fixed; }
@@ -58,7 +59,9 @@ class PopOutElement extends HTMLElement {
       <template>
         <div id="placeholder" class="static"></div>
       </template>
-      <div id="wrapper" class="static"><slot></slot></div>
+      <div id="wrapper" class="static">
+        <slot></slot>
+      </div>
     `;
   }
   
@@ -169,7 +172,7 @@ class OverScrollElement extends HTMLElement {
 
   #handleScroll(event) {
     requestAnimationFrame(ts => {
-      this.scrollBy({ left: event.deltaX });
+      this.scrollBy({ left: event.deltaX, top: event.deltaY });
     }); this.active?.retract(true);
   }
   
@@ -177,14 +180,24 @@ class OverScrollElement extends HTMLElement {
     return `
       <style>
         * { box-sizing: border-box; }
-
+        
         :host {
           display: flex;
-          flex-flow: row nowrap;
-          align-items: center;
           gap: 1rem;
+          align-items: center;
+        }
+        
+        :host(:not([vertical])) {
+          flex-flow: row nowrap;
           overflow-x: scroll;
           overflow-y: clip;
+        }
+        
+        :host([vertical]) {
+          display: inline-flex;
+          flex-flow: column nowrap;
+          overflow-x: clip;
+          overflow-y: scroll;
         }
       </style>
       <slot></slot>

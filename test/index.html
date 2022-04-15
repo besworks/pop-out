@@ -6,16 +6,22 @@
 <link rel="stylesheet" href="./test.css">
 <main>
   <h1> Pop Out! </h1>
-  <p> A horizontally scrolling element which has
-    children that can pop out when hovered.
-  </p>
+  <p> A scrollable element which has children that can pop out when hovered. </p>
   <over-scroll>
     <pop-out><img src="./img/b.png"></pop-out>
     <pop-out><img src="./img/b.svg"></pop-out>
     <pop-out><div class="test-a"><h2>TEST A</h2></div></pop-out>
     <pop-out><div class="test-b">This is TEST B it's a bit longer.</div></pop-out>
     <pop-out><ul><li>This</li><li>is</li><li>TEST</li><li>C</li></ul></pop-out>
+    <pop-out class="test-d"><p>TEST D1</p><p>TEST D2</p></pop-out>
     <pop-out><p class="info">This content can be anything at all. You have full control over the styles. The bar height will auto adjust to fit the tallest element.</p></pop-out>
+    <pop-out><img src="https://picsum.photos/720/480"></pop-out>
+    <pop-out><img src="https://picsum.photos/480/720"></pop-out>
+    <pop-out><img src="https://picsum.photos/100/100"></pop-out>
+  </over-scroll>
+  <over-scroll vertical>
+    <pop-out><img src="./img/b.png"></pop-out>
+    <pop-out><img src="./img/b.svg"></pop-out>
     <pop-out><img src="https://picsum.photos/720/480"></pop-out>
     <pop-out><img src="https://picsum.photos/480/720"></pop-out>
     <pop-out><img src="https://picsum.photos/100/100"></pop-out>
