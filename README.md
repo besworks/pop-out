@@ -17,7 +17,19 @@ The child elements are plucked out from the static context and positioned fixed 
 </over-scroll>
 ```
 
-Both element definitions are imported by the single script tag. The outer, `over-scroll` element is necessary to enable scroll events to pass through the nested elements and gracefully de-zoom the active element. The default mode is to scroll horizontally. Adding a `vertical` attribute modifies the scroll direction.
+Both element definitions are imported by the single script tag. You can also import the classes into your script and create these programatically.
+
+```
+import { OverScrollElement, PopOutElement } from './pop-out.js';
+
+let overScroll = new OverScrollElement();
+let popOut = new PopOutElement();
+popOut.innerHTML = `<h1> Hello! </h1>`;
+overScroll.append(popOut);
+document.body.append(overScroll);
+```
+
+The outer, `over-scroll` element is necessary to enable scroll events to pass through the nested elements and gracefully de-zoom the active element. The default mode is to scroll horizontally. Adding a `vertical` attribute modifies the scroll direction and makes it `display:inline-flex`.
 
 ````
 <over-scroll vertical>
