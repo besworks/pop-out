@@ -29,6 +29,10 @@ class PopOutElement extends HTMLElement {
           --shadow-out: drop-shadow(0 0 1rem #00000088);
         }
         
+        :host([active]) {
+          z-index: 10; 
+        }
+        
         #placeholder {
           pointer-events: none;
         }
@@ -49,7 +53,7 @@ class PopOutElement extends HTMLElement {
           filter: var(--shadow-out)
         }
         
-        .fixed { position: fixed; z-index: 10; }
+        .fixed { position: fixed; }
         .static { position: static; }
       </style>
       <template>
@@ -110,7 +114,6 @@ class PopOutElement extends HTMLElement {
   
   retract(now) {
     if (!this.out) { return; }
-
     this.removeAttribute('active');
     
     let after = () => {
