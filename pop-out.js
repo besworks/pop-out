@@ -29,10 +29,6 @@ class PopOutElement extends HTMLElement {
           --shadow-out: drop-shadow(0 0 1rem #00000088);
         }
         
-        :host([active]) {
-          z-index: 10;
-        }
-        
         #placeholder {
           pointer-events: none;
         }
@@ -53,7 +49,7 @@ class PopOutElement extends HTMLElement {
           filter: var(--shadow-out)
         }
         
-        .fixed { position: fixed; }
+        .fixed { position: fixed; z-index: 10; }
         .static { position: static; }
       </style>
       <template>
@@ -80,7 +76,7 @@ class PopOutElement extends HTMLElement {
   }
   
   get delay() {
-    let d = parseFloat(getComputedStyle(this.slotted)?.getPropertyValue('transition-duration'));
+    let d = parseFloat(getComputedStyle(this.wrapper)?.getPropertyValue('transition-duration'));
     if (!d) { d = 0; } // handle if not using transitions
     else if (d < 1 && d > 0) { d = d * 1000 } // handle values as 1000ms or 1.0s
     return d;
@@ -114,6 +110,7 @@ class PopOutElement extends HTMLElement {
   
   retract(now) {
     if (!this.out) { return; }
+
     this.removeAttribute('active');
     
     let after = () => {
