@@ -10,10 +10,12 @@ class PopOutElement extends HTMLElement {
     this.shadowRoot.innerHTML = this.template;
     this.wrapper = this.shadowRoot.querySelector('#wrapper');
     this.pstamp = this.shadowRoot.querySelector('template').content;
-    this.addEventListener('pointerdown', event => this.toggle());
     this.addEventListener('mousemove', event => this.expand());
     this.addEventListener('mouseenter', event => this.expand());
     this.addEventListener('mouseleave', event => this.retract());
+    this.addEventListener('touchstart', event => this.expand());
+    this.addEventListener('touchend', event => this.retract());
+    this.addEventListener('contextmenu', event => event.preventDefault());
   }
 
   get template() {
@@ -22,6 +24,7 @@ class PopOutElement extends HTMLElement {
         :host {
           display: block;
           cursor: zoom-in;
+          user-select: none;
           --scale-amount: 1.5;
           --scale-speed: 0.2s;
           --scale-timing: ease;
@@ -39,16 +42,16 @@ class PopOutElement extends HTMLElement {
         
         #wrapper {
           display: inline-block;
-        }
-        
-        #wrapper {
-          transition-property: transform, filter;
-          transition-timing-function: var(--scale-timing);
-          transition-duration: var(--scale-speed);
           filter: var(--shadow-in);
         }
         
-        :host([active]) #wrapper:hover {
+        :host([active]) #wrapper {
+          transition-property: transform, filter;
+          transition-timing-function: var(--scale-timing);
+          transition-duration: var(--scale-speed);
+        }
+        
+        #wrapper[out] {
           transform: scale(var(--scale-amount));
           filter: var(--shadow-out)
         }
@@ -101,32 +104,33 @@ class PopOutElement extends HTMLElement {
   }
   
   expand() {
-    if (this.out) { return; } this.out = true;
+    if (this.out || this.parentElement.scrolling) { return; }
+    this.out = true;
+    this.setAttribute('active', '');
     let r = this.getBoundingClientRect();
     this.shadowRoot.insertBefore(this.stamp, this.wrapper);
     this.wrapper.className = 'fixed';
     this.setSize(r.width, r.height);
     this.setPosition(r.left, r.top, r.width, r.height);
-    requestAnimationFrame(pf => {
-      this.setAttribute('active', '');
+    requestAnimationFrame(af => {
+      this.wrapper.setAttribute('out', '');
     });
   }
   
   retract(now) {
     if (!this.out) { return; }
-    this.removeAttribute('active');
+    this.wrapper.removeAttribute('out');
     
     let after = () => {
-      requestAnimationFrame(af => {
-        this.wrapper.className = 'static';
-        this.placeholder?.remove();
-        this.setPosition('auto');
-        this.out = false;
-      });
+      this.removeAttribute('active');
+      this.placeholder?.remove();
+      this.wrapper.className = 'static';
+      this.setPosition('auto');
+      this.out = false;
     };
     
     if (now) { after(); }
-    else { setTimeout(after, this.delay); }
+    else { setTimeout(ts => requestAnimationFrame(after), this.delay); }
   }
 
   toggle() {
@@ -148,6 +152,7 @@ class OverScrollElement extends HTMLElement {
   }
 
   #start = null;
+  scrolling = false;
 
   #setPosition(event) {
     if (event?.touches?.length) {
@@ -171,9 +176,12 @@ class OverScrollElement extends HTMLElement {
   }
 
   #handleScroll(event) {
+    this.scrolling = true;
+    this.active?.retract(true);
     requestAnimationFrame(ts => {
       this.scrollBy({ left: event.deltaX, top: event.deltaY });
-    }); this.active?.retract(true);
+      setTimeout(ts => this.scrolling = false, 200);
+    });
   }
   
   get template() {

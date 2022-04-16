@@ -41,7 +41,9 @@ You can pass any markup/elements you want into `pop-out` though images and cente
 
 ```
 pop-out {
+  display: block;
   cursor: zoom-in;
+  user-select: none;
   --scale-amount: 1.5;
   --scale-speed: 0.2s;
   --scale-timing: ease;
